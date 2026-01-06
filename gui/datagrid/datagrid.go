@@ -1,4 +1,4 @@
-package mainmenu
+package datagrid
 
 import (
 	"strconv"
