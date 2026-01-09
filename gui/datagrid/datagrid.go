@@ -7,8 +7,12 @@ import (
 	"github.com/rivo/tview"
 )
 
-func LoadApp(data [][]string) {
-	app := tview.NewApplication()
+var redrawParent func()
+var uiScreen *tview.Table
+
+func UI(redraw func(), data [][]string) *tview.Table {
+	redrawParent = redraw
+
 	table := tview.NewTable().
 		SetBorders(true)
 
@@ -49,9 +53,6 @@ func LoadApp(data [][]string) {
 		}
 	}
 	table.Select(0, 0).SetFixed(1, 1).SetDoneFunc(func(key tcell.Key) {
-		if key == tcell.KeyEscape {
-			app.Stop()
-		}
 		if key == tcell.KeyEnter {
 			table.SetSelectable(true, true)
 		}
@@ -59,7 +60,8 @@ func LoadApp(data [][]string) {
 		table.GetCell(row, column).SetTextColor(tcell.ColorRed)
 		table.SetSelectable(false, false)
 	})
-	if err := app.SetRoot(table, true).EnableMouse(true).Run(); err != nil {
-		panic(err)
-	}
+
+	uiScreen = table
+
+	return uiScreen
 }
