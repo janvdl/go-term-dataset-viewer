@@ -5,10 +5,10 @@ import (
 	"os"
 )
 
-func Read(filePath string) [][]string {
+func Read(filePath string) ([][]string, error) {
 	f, err := os.Open(filePath)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	defer f.Close()
 
@@ -18,5 +18,5 @@ func Read(filePath string) [][]string {
 		panic(err)
 	}
 
-	return data
+	return data, nil
 }

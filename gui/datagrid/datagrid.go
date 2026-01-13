@@ -1,20 +1,22 @@
 package datagrid
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )
 
-var redrawParent func()
 var uiScreen *tview.Table
 
-func UI(redraw func(), data [][]string) *tview.Table {
-	redrawParent = redraw
-
+func UI(data [][]string) *tview.Table {
 	table := tview.NewTable().
 		SetBorders(true)
+
+	if len(data) == 0 {
+		fmt.Println("No data")
+	}
 
 	cols, rows := len(data[0]), len(data)
 	for row := range rows {
