@@ -3,6 +3,7 @@ package gui
 import (
 	"github.com/gdamore/tcell/v2"
 	"github.com/janvdl/go-term-dataset-viewer/drivers/csv"
+	"github.com/janvdl/go-term-dataset-viewer/drivers/xpt"
 	"github.com/janvdl/go-term-dataset-viewer/gui/homepage"
 	"github.com/rivo/tview"
 )
@@ -24,6 +25,9 @@ func Init() {
 
 	data_squirtle, _ := csv.Read("/Users/jvdl/Programming/github.com/janvdl/go-term-dataset-viewer/sampledata/squirtle.csv")
 	homepage.AddPage("squirtle", data_squirtle)
+
+	data_xpt, _ := xpt.Read("/Users/jvdl/Programming/github.com/janvdl/go-term-dataset-viewer/sampledata/sample.xpt")
+	homepage.AddPage("xpt example", data_xpt)
 
 	app.SetInputCapture(keyPressHandler)
 	if err := app.SetRoot(home, true).SetFocus(home).Run(); err != nil {
