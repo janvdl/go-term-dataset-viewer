@@ -1,6 +1,7 @@
 package homepage
 
 import (
+	"github.com/janvdl/go-term-dataset-viewer/datacontroller"
 	"github.com/janvdl/go-term-dataset-viewer/gui/datagrid"
 	"github.com/rivo/tview"
 )
@@ -70,9 +71,9 @@ func prevPage() {
 	}
 }
 
-func AddPage(pageName string, data [][]string) {
+func AddPage(pageName string, data *datacontroller.Dataset) {
 	if data != nil {
-		pages.AddPage(pageName, datagrid.UI(data), true, true)
+		pages.AddPage(pageName, datagrid.UI(data.Data), true, true)
 		changeActivePage(pageName)
 		refreshPagesList()
 	}
@@ -85,11 +86,11 @@ func closeCurrentPage() {
 
 func refreshPagesList() {
 	pagesList.Clear()
-	for _, page := range pages.GetPageNames(false) {
-		secondaryText := ""
-		if page == activePage {
-			secondaryText = "currently viewing"
-		}
-		pagesList.AddItem(page, secondaryText, ' ', nil)
+	for _, ds := range datacontroller.Datasets {
+		pagesList.AddItem(ds.Name, "secondary", ' ', nil)
 	}
+}
+
+func Refresh() {
+	refreshPagesList()
 }
