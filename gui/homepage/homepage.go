@@ -71,10 +71,10 @@ func prevPage() {
 	}
 }
 
-func AddPage(pageName string, data *datacontroller.Dataset) {
+func AddPage(data *datacontroller.Dataset) {
 	if data != nil {
-		pages.AddPage(pageName, datagrid.UI(data.Data), true, true)
-		changeActivePage(pageName)
+		pages.AddPage(data.Name, datagrid.UI(data.Data), true, true)
+		changeActivePage(data.Name)
 		refreshPagesList()
 	}
 }
@@ -86,8 +86,13 @@ func closeCurrentPage() {
 
 func refreshPagesList() {
 	pagesList.Clear()
-	for _, ds := range datacontroller.Datasets {
-		pagesList.AddItem(ds.Name, "secondary", ' ', nil)
+	for idx, ds := range datacontroller.Datasets {
+		active := activePage == ds.Name
+		if active {
+			pagesList.AddItem(ds.Name, "", ' ', nil).SetCurrentItem(idx)
+		} else {
+			pagesList.AddItem(ds.Name, "", ' ', nil)
+		}
 	}
 }
 

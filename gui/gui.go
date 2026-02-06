@@ -16,8 +16,15 @@ func Init() {
 
 	home := homepage.UI(app)
 
-	datacontroller.OpenData("/Users/jvdl/Programming/github.com/janvdl/go-term-dataset-viewer/sampledata/bulbasaur.csv")
-	datacontroller.OpenData("/Users/jvdl/Programming/github.com/janvdl/go-term-dataset-viewer/sampledata/sample.xpt")
+	files := []string{
+		"/Users/jvdl/Programming/github.com/janvdl/go-term-dataset-viewer/sampledata/bulbasaur.csv",
+		"/Users/jvdl/Programming/github.com/janvdl/go-term-dataset-viewer/sampledata/sample.xpt",
+	}
+
+	for idx := range files {
+		ds := datacontroller.OpenData(files[idx])
+		homepage.AddPage(ds)
+	}
 
 	homepage.Refresh()
 

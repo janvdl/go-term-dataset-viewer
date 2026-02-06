@@ -15,13 +15,14 @@ type Dataset struct {
 	Data [][]string
 }
 
-func OpenData(filePath string) {
+func OpenData(filePath string) *Dataset {
 	ds := &Dataset{}
 
 	ext := strings.ToLower(filepath.Ext(filePath))
 	ds.Name = filepath.Base(filePath)
 
-	if ext == ".csv" {
+	switch ext {
+	case ".csv":
 		data, err := csv.Read(filePath)
 
 		if err != nil {
@@ -30,7 +31,7 @@ func OpenData(filePath string) {
 
 		ds.Data = data
 		Datasets = append(Datasets, ds)
-	} else if ext == ".xpt" {
+	case ".xpt":
 		data, err := xpt.Read(filePath)
 
 		if err != nil {
@@ -40,4 +41,6 @@ func OpenData(filePath string) {
 		ds.Data = data
 		Datasets = append(Datasets, ds)
 	}
+
+	return ds
 }
