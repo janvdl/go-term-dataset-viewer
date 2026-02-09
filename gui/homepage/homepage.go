@@ -47,7 +47,6 @@ func changeActivePage(pageName string) {
 }
 
 func nextPage() {
-	print(curr_idx)
 	totalPages := pages.GetPageCount()
 	if curr_idx < totalPages-1 {
 		curr_idx++
@@ -56,7 +55,6 @@ func nextPage() {
 }
 
 func prevPage() {
-	print(curr_idx)
 	if curr_idx > 0 {
 		curr_idx--
 		changeActivePage(pages.GetPageNames(false)[curr_idx])
