@@ -9,6 +9,7 @@ import (
 )
 
 var Datasets []*Dataset
+var DatasetsLen = make(map[string]int) // lookup to quickly see num of rows in ds
 
 type Dataset struct {
 	Name string
@@ -41,6 +42,9 @@ func OpenData(filePath string) *Dataset {
 		ds.Data = data
 		Datasets = append(Datasets, ds)
 	}
+
+	// store num rows for each dataset
+	DatasetsLen[ds.Name] = len(ds.Data)
 
 	return ds
 }

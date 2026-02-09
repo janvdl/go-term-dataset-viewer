@@ -18,6 +18,7 @@ func Init() {
 
 	files := []string{
 		"/Users/jvdl/Programming/github.com/janvdl/go-term-dataset-viewer/sampledata/bulbasaur.csv",
+		"/Users/jvdl/Programming/github.com/janvdl/go-term-dataset-viewer/sampledata/squirtle.csv",
 		"/Users/jvdl/Programming/github.com/janvdl/go-term-dataset-viewer/sampledata/sample.xpt",
 	}
 

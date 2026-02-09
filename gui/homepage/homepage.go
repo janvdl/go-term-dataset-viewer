@@ -1,6 +1,9 @@
 package homepage
 
 import (
+	"math"
+	"strconv"
+
 	"github.com/janvdl/go-term-dataset-viewer/datacontroller"
 	"github.com/janvdl/go-term-dataset-viewer/gui/datagrid"
 	"github.com/rivo/tview"
@@ -9,6 +12,7 @@ import (
 var pages *tview.Pages
 var pagesList *tview.List
 var activePage string
+var curr_idx int = 0
 
 func UI(app *tview.Application) *tview.Grid {
 	newPrimitive := func(text string) tview.Primitive {
@@ -43,14 +47,8 @@ func changeActivePage(pageName string) {
 }
 
 func nextPage() {
-	curr_idx := 0
+	print(curr_idx)
 	totalPages := pages.GetPageCount()
-	for idx, page := range pages.GetPageNames(false) {
-		if page == activePage {
-			curr_idx = idx
-		}
-	}
-
 	if curr_idx < totalPages-1 {
 		curr_idx++
 		changeActivePage(pages.GetPageNames(false)[curr_idx])
@@ -58,13 +56,7 @@ func nextPage() {
 }
 
 func prevPage() {
-	curr_idx := 0
-	for idx, page := range pages.GetPageNames(false) {
-		if page == activePage {
-			curr_idx = idx
-		}
-	}
-
+	print(curr_idx)
 	if curr_idx > 0 {
 		curr_idx--
 		changeActivePage(pages.GetPageNames(false)[curr_idx])
@@ -74,24 +66,26 @@ func prevPage() {
 func AddPage(data *datacontroller.Dataset) {
 	if data != nil {
 		pages.AddPage(data.Name, datagrid.UI(data.Data), true, true)
-		changeActivePage(data.Name)
 		refreshPagesList()
 	}
 }
 
 func closeCurrentPage() {
 	pages.RemovePage(activePage)
+
+	// make sure curr page index is within bounds
+	curr_idx = int(math.Max(float64(curr_idx), float64(pages.GetPageCount())))
 	refreshPagesList()
 }
 
 func refreshPagesList() {
 	pagesList.Clear()
-	for idx, ds := range datacontroller.Datasets {
-		active := activePage == ds.Name
+	for idx, ds := range pages.GetPageNames(false) {
+		active := activePage == ds
 		if active {
-			pagesList.AddItem(ds.Name, "", ' ', nil).SetCurrentItem(idx)
+			pagesList.AddItem(ds, strconv.Itoa(datacontroller.DatasetsLen[ds]-1)+" rows", ' ', nil).SetCurrentItem(idx)
 		} else {
-			pagesList.AddItem(ds.Name, "", ' ', nil)
+			pagesList.AddItem(ds, strconv.Itoa(datacontroller.DatasetsLen[ds]-1)+" rows", ' ', nil)
 		}
 	}
 }
